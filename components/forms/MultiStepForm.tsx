@@ -1,20 +1,10 @@
 'use client';
 
-import { useState, ReactNode } from 'react';
+import { useState, ReactNode, createContext, useContext } from 'react';
 import ProgressIndicator from '../ProgressIndicator';
 import GradientButton from '../GradientButton';
 
-interface Step {
-  number: number;
-  title: string;
-  component: ReactNode;
-}
-
-interface MultiStepFormProps {
-  steps: Step[];
-  onSubmit: (data: FormData) => void | Promise<void>;
-}
-
+// Form Data Interface
 export interface FormData {
   // Step 1: Business Information
   businessName: string;
@@ -79,6 +69,35 @@ export const initialFormData: FormData = {
   agreeTerms: false,
   agreeCredit: false,
 };
+
+// Form Context for sharing state between form steps
+interface FormContextType {
+  formData: FormData;
+  updateFormData: (field: keyof FormData, value: string | boolean) => void;
+  errors: Partial<Record<keyof FormData, string>>;
+}
+
+export const FormContext = createContext<FormContextType | null>(null);
+
+export function useFormContext() {
+  const context = useContext(FormContext);
+  if (!context) {
+    throw new Error('useFormContext must be used within a FormProvider');
+  }
+  return context;
+}
+
+// Component interfaces
+interface Step {
+  number: number;
+  title: string;
+  component: ReactNode;
+}
+
+interface MultiStepFormProps {
+  steps: Step[];
+  onSubmit: (data: FormData) => void | Promise<void>;
+}
 
 export default function MultiStepForm({ steps, onSubmit }: MultiStepFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
@@ -189,23 +208,4 @@ export default function MultiStepForm({ steps, onSubmit }: MultiStepFormProps) {
       </div>
     </div>
   );
-}
-
-// Context for form state
-import { createContext, useContext } from 'react';
-
-interface FormContextType {
-  formData: FormData;
-  updateFormData: (field: keyof FormData, value: string | boolean) => void;
-  errors: Partial<Record<keyof FormData, string>>;
-}
-
-export const FormContext = createContext<FormContextType | null>(null);
-
-export function useFormContext() {
-  const context = useContext(FormContext);
-  if (!context) {
-    throw new Error('useFormContext must be used within a FormProvider');
-  }
-  return context;
 }
