@@ -1,2 +1,0 @@
-# CapTap
-MCA Lender Website
