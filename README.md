@@ -102,8 +102,7 @@ npm run lint
 ## Brand Guidelines
 
 - **Primary Color**: Deep blue (#1E3A5F) - trust and professionalism
-- **Secondary Color**: Teal (#0D9488) - growth and money
-- **Accent Color**: Orange (#F97316) - energy, used for CTAs
+- **Secondary/Accent Color**: Teal (#0D9488) - growth and money, used for CTAs
 - **Typography**: Inter font family
 
 ## License
