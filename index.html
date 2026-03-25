@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1290,11 +1290,11 @@
         const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
         const htmlElement = document.documentElement;
 
-        // Check local storage only (Default to Light Mode)
-        if (localStorage.theme === 'dark') {
-            htmlElement.classList.add('dark');
-        } else {
+        // Check local storage only (Default to Dark Mode)
+        if (localStorage.theme === 'light') {
             htmlElement.classList.remove('dark');
+        } else {
+            htmlElement.classList.add('dark');
         }
 
         function toggleTheme() {
