@@ -94,7 +94,7 @@
     <style>
         * { box-sizing: border-box; }
         
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: auto; }
         
         body {
             /* Default Light Mode Colors */
@@ -1289,6 +1289,11 @@
     </footer>
 
     <script>
+        // Enable smooth scroll after page load (prevents auto-scroll on load)
+        window.addEventListener('load', () => {
+            document.documentElement.style.scrollBehavior = 'smooth';
+        });
+
         // Theme Toggle Logic
         const themeToggleBtn = document.getElementById('theme-toggle');
         const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
