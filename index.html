@@ -1497,14 +1497,40 @@
                 submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
                 submitBtn.disabled = true;
 
-                // Simulate submission
-                setTimeout(() => {
+                // Submit to CapTap app server → create Zoho lead → redirect to full application
+                const formData = {
+                    business: form.querySelector('[name="business"]')?.value || '',
+                    owner: form.querySelector('[name="owner"]')?.value || '',
+                    phone: form.querySelector('[name="phone"]')?.value || '',
+                    email: form.querySelector('[name="email"]')?.value || '',
+                    revenue: form.querySelector('[name="revenue"]')?.value || '',
+                    amount: form.querySelector('[name="amount"]')?.value || '',
+                };
+
+                fetch('https://app.captap.co/api/create-lead', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData),
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.ok && data.appUrl) {
+                        window.location.href = data.appUrl;
+                    } else {
+                        form.classList.add('hidden');
+                        const successMsg = document.getElementById('success-message');
+                        if (successMsg) successMsg.classList.remove('hidden');
+                    }
+                })
+                .catch(() => {
                     form.classList.add('hidden');
                     const successMsg = document.getElementById('success-message');
                     if (successMsg) successMsg.classList.remove('hidden');
+                })
+                .finally(() => {
                     submitBtn.innerHTML = '<span>Check Eligibility</span><i class="fa-solid fa-arrow-right"></i>';
                     submitBtn.disabled = false;
-                }, 1500);
+                });
             });
 
             // Real-time validation feedback
