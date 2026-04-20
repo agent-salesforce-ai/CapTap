@@ -1584,9 +1584,9 @@
         const partnerSubmitBtn = document.getElementById('partner-submit-btn');
 
         if (partnerForm && partnerSubmitBtn) {
-            partnerForm.addEventListener('submit', (e) => {
+            partnerForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                
+
                 let isValid = true;
                 partnerForm.querySelectorAll('[required]').forEach(field => {
                     if (!field.value.trim()) {
@@ -1599,16 +1599,35 @@
 
                 if (!isValid) return;
 
-                // Show loading
+                const originalBtnHTML = partnerSubmitBtn.innerHTML;
                 partnerSubmitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Sending...';
                 partnerSubmitBtn.disabled = true;
 
-                // Simulate submission
-                setTimeout(() => {
+                const payload = {
+                    company_name: partnerForm.querySelector('[name="company_name"]').value.trim(),
+                    partner_phone: partnerForm.querySelector('[name="partner_phone"]').value.trim(),
+                    partner_email: partnerForm.querySelector('[name="partner_email"]').value.trim(),
+                };
+
+                try {
+                    const resp = await fetch('https://app.captap.co/api/partner-signup', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                    });
+                    if (!resp.ok) {
+                        const err = await resp.json().catch(() => ({}));
+                        throw new Error(err.error || 'Submission failed');
+                    }
                     partnerForm.classList.add('hidden');
                     const successMsg = document.getElementById('partner-success');
                     if (successMsg) successMsg.classList.remove('hidden');
-                }, 1500);
+                } catch (err) {
+                    partnerSubmitBtn.innerHTML = originalBtnHTML;
+                    partnerSubmitBtn.disabled = false;
+                    alert('Sorry, there was a problem sending your request. Please email ops@captap.co directly.');
+                    console.error('[partner-signup]', err);
+                }
             });
         }
     </script>
