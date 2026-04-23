@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Pre-hydration theme: light by default, only dark if user explicitly set it. -->
+    <script>
+    (function() {
+        try {
+            localStorage.removeItem('ct-theme');
+            var saved = localStorage.getItem('ct-theme-v2');
+            if (saved === 'dark') document.documentElement.classList.add('dark');
+        } catch (_) {}
+        try {
+            if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+            if (!location.hash) window.scrollTo(0, 0);
+        } catch (_) {}
+    })();
+    </script>
+    <title>FAQ | CapTap</title>
+    <meta name="description" content="Common questions about CapTap merchant cash advances — how funding works, credit requirements, documents needed, and more.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================
+           CapTap Design Tokens (mirror of index.html)
+           ============================================================ */
+        :root {
+            --ct-green: #059669;
+            --ct-green-dark: #047857;
+            --ct-green-light: #ecfdf5;
+            --ct-bg: #f8fafc;
+            --ct-white: #ffffff;
+            --ct-text: #0f172a;
+            --ct-text-secondary: #334155;
+            --ct-text-muted: #64748b;
+            --ct-border: #e2e8f0;
+            --ct-header-bg: rgba(255, 255, 255, 0.85);
+            --radius: 14px;
+            --radius-compact: 8px;
+            --radius-tight: 6px;
+            --radius-round: 999px;
+        }
+        html.dark {
+            --ct-bg: #0b1220;
+            --ct-white: #111827;
+            --ct-text: #f1f5f9;
+            --ct-text-secondary: #cbd5e1;
+            --ct-text-muted: #94a3b8;
+            --ct-border: #1f2937;
+            --ct-header-bg: rgba(17, 24, 39, 0.85);
+            --ct-green-light: rgba(5, 150, 105, 0.15);
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 100px; -webkit-text-size-adjust: 100%; }
+        body {
+            margin: 0;
+            font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            line-height: 1.55;
+            color: var(--ct-text);
+            background: var(--ct-bg);
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            background:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+        }
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--ct-header-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--ct-border);
+        }
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+            gap: 32px;
+        }
+        .logo { display: inline-flex; align-items: center; height: 54px; }
+        .logo img { height: 100%; width: auto; display: block; }
+        .logo img.dark-logo { display: none; }
+        html.dark .logo img.light-logo { display: none; }
+        html.dark .logo img.dark-logo { display: block; }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-phone {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ct-green);
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: var(--radius-compact);
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .header-phone:hover { background: var(--ct-green-light); }
+        .header-phone svg { width: 14px; height: 14px; stroke: var(--ct-green); }
+        @media (max-width: 900px) { .header-phone { display: none; } }
+
+        .theme-toggle {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid var(--ct-border);
+            border-radius: var(--radius-compact);
+            color: var(--ct-text-secondary);
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+        .theme-toggle:hover { border-color: var(--ct-green); color: var(--ct-green); }
+        .theme-toggle svg { width: 14px; height: 14px; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: var(--radius-compact);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s;
+            line-height: 1;
+        }
+        .btn svg { width: 14px; height: 14px; }
+        .btn-ghost {
+            background: transparent;
+            border-color: var(--ct-border);
+            color: var(--ct-text-secondary);
+        }
+        .btn-ghost:hover {
+            border-color: var(--ct-green);
+            color: var(--ct-green);
+            background: var(--ct-green-light);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--ct-green) 0%, var(--ct-green-dark) 100%);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(5,150,105,0.2);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 4px 14px rgba(5,150,105,0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Page content */
+        .page-wrap { padding: 64px 0 96px; }
+        .page-intro {
+            text-align: center;
+            margin-bottom: 44px;
+        }
+        .eyebrow {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--ct-green);
+            margin-bottom: 14px;
+        }
+        .page-intro h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(40px, 6vw, 64px);
+            line-height: 1;
+            letter-spacing: 0.02em;
+            color: var(--ct-text);
+            margin: 0 0 16px;
+        }
+        .page-intro p {
+            font-size: 16px;
+            color: var(--ct-text-muted);
+            max-width: 620px;
+            margin: 0 auto;
+        }
+        .page-intro p a { color: var(--ct-green); font-weight: 600; text-decoration: none; }
+        .page-intro p a:hover { text-decoration: underline; }
+
+        /* FAQ accordion — mirrors main site */
+        .faq-list {
+            max-width: 880px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .faq-item {
+            background: var(--ct-white);
+            border: 1px solid var(--ct-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.15s;
+        }
+        .faq-item:hover { border-color: var(--ct-green); }
+        .faq-q {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            padding: 20px 22px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--ct-text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        .faq-chev {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--ct-green-light);
+            color: var(--ct-green);
+            font-size: 14px;
+            font-weight: 700;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+        .faq-item.open .faq-chev { transform: rotate(180deg); }
+        .faq-a {
+            display: none;
+            padding: 0 22px 22px;
+            color: var(--ct-text-secondary);
+            font-size: 14px;
+            line-height: 1.65;
+            border-top: 1px solid var(--ct-border);
+            padding-top: 18px;
+        }
+        .faq-item.open .faq-a { display: block; }
+        .faq-a em { color: var(--ct-green); font-style: normal; font-weight: 600; }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--ct-border);
+            padding: 40px 0 32px;
+            margin-top: 48px;
+            background: var(--ct-white);
+        }
+        .footer-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--ct-text-muted);
+        }
+        .footer-inner a {
+            color: var(--ct-text-secondary);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.15s;
+        }
+        .footer-inner a:hover { color: var(--ct-green); }
+
+        @media (max-width: 768px) {
+            .header-actions .btn-ghost { display: none; }
+            .header-inner { height: 64px; gap: 12px; }
+            .page-wrap { padding: 40px 0 64px; }
+            .faq-q { padding: 16px 18px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="header-inner">
+            <a href="/" class="logo" aria-label="CapTap Home">
+                <img src="/img/captap-logo-light.png" alt="CapTap" class="light-logo">
+                <img src="/img/captap-logo-dark.png" alt="CapTap" class="dark-logo">
+            </a>
+            <div class="header-actions">
+                <a href="tel:+19295297322" class="header-phone" aria-label="Call CapTap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V19a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 3.18 2 2 0 0 1 4.18 1h2.08a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.42a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span>(929) 529-7322</span>
+                </a>
+                <a href="/" class="btn btn-ghost">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                    Back to Home
+                </a>
+                <a href="https://app.captap.co/apply" class="btn btn-primary">
+                    Get Funded
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                    <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main -->
+<main class="page-wrap">
+    <div class="container">
+        <div class="page-intro">
+            <span class="eyebrow">FAQ</span>
+            <h1>Common Questions</h1>
+            <p>Everything you need to know about CapTap merchant cash advances. If we don't answer it here, email <a href="mailto:ops@captap.co">ops@captap.co</a>.</p>
+        </div>
+
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-q">What is a merchant cash advance?<span class="faq-chev">▾</span></button>
+                <div class="faq-a">An MCA is an advance on your future sales. You receive a lump sum and repay through a small percentage of your daily credit card or bank deposits. It's not a loan — it's a purchase of your future receivables, which means more flexible qualification.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">What credit score do I need?<span class="faq-chev">▾</span></button>
+                <div class="faq-a">We don't have a minimum credit score requirement. We focus primarily on your business revenue and cash flow. Even business owners with credit challenges can qualify if they have strong, consistent deposits.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">How fast can I get funded?<span class="faq-chev">▾</span></button>
+                <div class="faq-a">Most applications are reviewed within 3 hours during business days. Once approved and you sign the agreement, funds are typically wired to your account within 24 hours — often same day.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">What documents do I need?<span class="faq-chev">▾</span></button>
+                <div class="faq-a">Just 3 months of business bank statements and a valid ID. That's it. No tax returns, no business plans, no financial projections required.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">Will this affect my credit score?<span class="faq-chev">▾</span></button>
+                <div class="faq-a">Checking your eligibility involves only a soft credit inquiry, which does not impact your score. A hard inquiry only occurs if you accept an offer and proceed with funding.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">How much can I qualify for?<span class="faq-chev">▾</span></button>
+                <div class="faq-a">We typically advance 50% – 100% of your average monthly revenue as a single draw. Minimum $10K, maximum $2M. Your underwriter will propose a tiered structure so you can pick a size and term that fits your cash flow.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">What does pricing actually look like?<span class="faq-chev">▾</span></button>
+                <div class="faq-a">MCAs are priced as a <em>factor rate</em>, not an APR. On a $100K advance at 1.28, you repay $128K total over the term. Rates range from 1.18 (prime) to 1.49 (second-look). There are no prepayment penalties — paying early reduces your effective cost.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">How do repayments work?<span class="faq-chev">▾</span></button>
+                <div class="faq-a">Most deals use a fixed daily ACH debit from your business bank account (Monday – Friday). Larger advances and tier-A deals can be structured as weekly. The debit amount is set on day one and doesn't change — no surprises.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">Can I stack on top of an existing MCA?<span class="faq-chev">▾</span></button>
+                <div class="faq-a">Yes, we write 2nd and 3rd-position deals when the math works. Send us your current advances' balances and daily debits and we'll tell you within 3 hours whether a stacked offer makes sense.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">Is CapTap licensed in my state?<span class="faq-chev">▾</span></button>
+                <div class="faq-a">We fund merchants in all 50 U.S. states. State-by-state disclosures are provided in your offer packet. MCAs are purchase-of-receivables agreements, not loans, so they're regulated differently from state to state — ask your rep if you want specifics.</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-inner">
+            <div>&copy; 2026 CapTap Capital LLC. All rights reserved.</div>
+            <div>
+                <a href="/">Home</a>
+                <a href="/privacy-policy.html">Privacy Policy</a>
+                <a href="/terms-of-use.html">Terms of Use</a>
+                <a href="mailto:ops@captap.co">ops@captap.co</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Theme toggle
+    (function() {
+        const toggle = document.getElementById('theme-toggle');
+        const sun = document.getElementById('icon-sun');
+        const moon = document.getElementById('icon-moon');
+        function syncIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            sun.style.display = isDark ? 'none' : '';
+            moon.style.display = isDark ? '' : 'none';
+        }
+        syncIcons();
+        toggle.addEventListener('click', function() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            try { localStorage.setItem('ct-theme-v2', isDark ? 'dark' : 'light'); } catch (_) {}
+            syncIcons();
+        });
+    })();
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-item').forEach(function(item) {
+        const btn = item.querySelector('.faq-q');
+        if (!btn) return;
+        btn.addEventListener('click', function() {
+            item.classList.toggle('open');
+        });
+    });
+</script>
+
+</body>
+</html>
