@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Pre-hydration theme: light by default, only dark if user explicitly set it.
          Uses a versioned key so stale "dark" prefs from earlier builds get reset. -->
@@ -1913,6 +1913,137 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 14px;
         }
+        .process-grid.two-up { grid-template-columns: repeat(2, 1fr); max-width: 820px; margin-left: auto; margin-right: auto; }
+        @media (max-width: 900px) {
+            .process-grid.two-up { grid-template-columns: 1fr; }
+        }
+
+        /* --- bubble variant: keep 4 across as long as possible --- */
+        .process-grid.bubbles {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            align-items: stretch;
+        }
+        @media (max-width: 900px) {
+            .process-grid.bubbles { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        }
+        @media (max-width: 560px) {
+            .process-grid.bubbles { grid-template-columns: 1fr; }
+        }
+        .step.bubble {
+            border-radius: 24px;
+            padding: 28px 26px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .step.bubble:hover {
+            transform: translateY(-3px);
+            border-color: var(--ct-green);
+            box-shadow: 0 16px 40px -14px rgba(5,150,105,0.22);
+        }
+        .step.bubble .step-num {
+            font-size: 56px;
+            margin-bottom: 6px;
+        }
+        .step.bubble h4 { font-size: 22px; }
+        .step.bubble p {
+            flex: 1;
+        }
+        .step.bubble.feature {
+            background: linear-gradient(180deg, rgba(5,150,105,0.06) 0%, var(--ct-white) 65%);
+            border-color: rgba(5,150,105,0.35);
+        }
+        html.dark .step.bubble.feature {
+            background: linear-gradient(180deg, rgba(5,150,105,0.12) 0%, rgba(255,255,255,0.02) 65%);
+            border-color: rgba(5,150,105,0.45);
+        }
+        .bubble-eyebrow {
+            display: inline-block;
+            align-self: flex-start;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ct-green);
+            background: rgba(5,150,105,0.1);
+            padding: 4px 10px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+        }
+        .bubble-eyebrow.alt {
+            color: #b45309;
+            background: rgba(217,119,6,0.10);
+        }
+        html.dark .bubble-eyebrow.alt { color: #f59e0b; background: rgba(245,158,11,0.15); }
+        /* Invisible spacer — reserves the height of a .bubble-eyebrow so
+           bubbles without a badge align their step-num with ones that have one */
+        .bubble-eyebrow.placeholder {
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .bubble-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 4px 0 16px;
+            padding: 12px;
+            border: 1px solid var(--ct-border);
+            border-radius: 14px;
+            background: var(--ct-surface-alt, rgba(0,0,0,0.015));
+        }
+        .bubble-stats > div { display: flex; flex-direction: column; gap: 2px; text-align: center; }
+        .bubble-stats .bs-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ct-text-muted);
+        }
+        .bubble-stats .bs-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 15px;
+            letter-spacing: 0.03em;
+            color: var(--ct-text);
+        }
+        html.dark .bubble-stats { background: rgba(255,255,255,0.025); }
+
+        .bubble-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .bubble-list li {
+            position: relative;
+            padding-left: 22px;
+            font-size: 13px;
+            line-height: 1.45;
+            color: var(--ct-text-secondary);
+        }
+        .bubble-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--ct-green);
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+            background-size: 10px 10px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        @media (max-width: 900px) {
+            .process-grid.bubbles { grid-template-columns: 1fr; gap: 16px; }
+            .step.bubble { padding: 24px; }
+            .step.bubble .step-num { font-size: 46px; }
+            .bubble-stats .bs-value { font-size: 14px; }
+        }
         .step {
             padding: 22px;
             border: 1px solid var(--ct-border);
@@ -3062,7 +3193,7 @@
                 <div class="nav-dropdown" id="nav-dd-solutions">
                     <button type="button" class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
                         Solutions
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </button>
                     <div class="nav-dropdown-menu" role="menu">
                         <a href="#qualify" role="menuitem">Qualify<span class="dd-sub">Quick check — 30 seconds</span></a>
@@ -3073,7 +3204,7 @@
                 <div class="nav-dropdown" id="nav-dd-resources">
                     <button type="button" class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
                         Resources
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </button>
                     <div class="nav-dropdown-menu" role="menu">
                         <a href="#stories" role="menuitem">Stories<span class="dd-sub">Happy hour reviews</span></a>
@@ -3083,23 +3214,23 @@
             </nav>
             <div class="header-actions">
                 <a href="tel:+19295297322" class="header-phone" aria-label="Call CapTap">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V19a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 3.18 2 2 0 0 1 4.18 1h2.08a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.42a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V19a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 3.18 2 2 0 0 1 4.18 1h2.08a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.42a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                     <span>(929) 529-7322</span>
                 </a>
                 <a href="https://portal.captap.co/?mode=merchant" class="btn btn-ghost" target="_blank" rel="noopener">Portal Sign In</a>
                 <a href="https://app.captap.co/apply" class="btn btn-primary" target="_blank" rel="noopener">
                     Get Funded
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
                 </a>
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-                    <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-                    <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+                    <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 </button>
                 <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <line x1="4" y1="7"  x2="20" y2="7"  fill="none"/>
-                        <line x1="4" y1="12" x2="20" y2="12" fill="none"/>
-                        <line x1="4" y1="17" x2="20" y2="17" fill="none"/>
+                        <line x1="4" y1="7" x2="20" y2="7" fill="none"></line>
+                        <line x1="4" y1="12" x2="20" y2="12" fill="none"></line>
+                        <line x1="4" y1="17" x2="20" y2="17" fill="none"></line>
                     </svg>
                 </button>
             </div>
@@ -3138,7 +3269,7 @@
                 <div class="hero-ctas">
                     <a href="https://app.captap.co/apply" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
                         Start Your Tab
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
                     </a>
                     <a href="#process" class="btn btn-ghost btn-lg">See How It Works</a>
                 </div>
@@ -3169,12 +3300,12 @@
 
             <!-- Hero visual: business owner photo with credibility chips -->
             <div class="hero-photo-wrap">
-                <img src="/img/business-owner.jpg?v=2" alt="Small business owner" loading="eager" width="1200" height="1500">
+                <img src="/img/business-owner.jpg" alt="Small business owner" loading="eager" width="1200" height="1500">
 
                 <!-- Top-right: verified / funded chip -->
                 <div class="hero-photo-chip top-right">
                     <span class="chip-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
                     </span>
                     <span class="chip-text">
                         <span class="chip-top">Funded by CapTap</span>
@@ -3185,15 +3316,15 @@
                 <!-- Bottom-left: rating / trust chip -->
                 <div class="hero-photo-chip bottom-left">
                     <span class="chip-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
                     </span>
                     <span class="chip-text">
                         <span class="hero-photo-stars">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
                         </span>
                         <span class="chip-bottom">Trusted by 2,400+ Owners</span>
                     </span>
@@ -3276,82 +3407,122 @@
 </section>
 
 <!-- =============================================================
-     FUNDING OPTIONS (OnDeck-style 2-card: Term Advance + Line of Credit)
+     FUNDING OPTIONS + PROCESS (merged: product card + 3-step flow)
      ============================================================= -->
 <section class="funding-options" id="funding-options">
     <div class="container">
         <div class="funding-intro reveal">
-            <span class="eyebrow">Funding Options</span>
+            <span class="eyebrow">Funding Options · The Process</span>
             <h2>One tap. Same day.</h2>
-            <p>A lump sum of capital delivered same-day with fixed daily or weekly payments — until it's paid off.</p>
+            <p>Apply at the bar, review your offer, get funded — a lump sum delivered same-day with fixed daily or weekly payments until it's paid off.</p>
         </div>
-        <div class="funding-grid single">
-            <!-- MERCHANT CASH ADVANCE -->
-            <div class="fund-card reveal">
-                <span class="fund-eyebrow">Merchant Cash Advance</span>
-                <h3>One Pour. One Payback.</h3>
-                <p class="fund-tagline">Get a lump sum of capital delivered same-day. Daily or weekly payments remitted from your revenue until it's paid off.</p>
-                <div class="fund-stats">
-                    <div class="fund-stat">
-                        <div class="fund-stat-label">Amount</div>
-                        <div class="fund-stat-value">$<span class="accent">10K</span>–$500K</div>
+        <!-- 3 STEP BUBBLES across the full width -->
+        <div id="process">
+            <div class="process-grid bubbles">
+                <!-- 01 — First Pour -->
+                <div class="step bubble feature reveal">
+                    <div class="bubble-eyebrow">Merchant Cash Advance</div>
+                    <div class="step-num">01</div>
+                    <h4>First Pour</h4>
+                    <p>Apply at the bar — we just need 3 months of business bank statements and a signed application to get started.</p>
+                    <div class="bubble-stats">
+                        <div><span class="bs-label">Amount</span><span class="bs-value">$10K–$500K</span></div>
+                        <div><span class="bs-label">Term</span><span class="bs-value">Up to 12 mo</span></div>
+                        <div><span class="bs-label">Funding</span><span class="bs-value">Same Day</span></div>
                     </div>
-                    <div class="fund-stat">
-                        <div class="fund-stat-label">Term</div>
-                        <div class="fund-stat-value"><span class="accent">Up to</span> 12 mo</div>
-                    </div>
-                    <div class="fund-stat">
-                        <div class="fund-stat-label">Funding</div>
-                        <div class="fund-stat-value"><span class="accent">Same</span> Day</div>
+                    <a href="https://app.captap.co/apply" target="_blank" rel="noopener" class="step-cta">
+                        <span>Get Funded</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M13 5l7 7-7 7"></path></svg>
+                    </a>
+                    <div class="step-meta">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+                        <span>Minimal paperwork</span>
                     </div>
                 </div>
-                <ul class="fund-list">
-                    <li>Same-day wire funding</li>
-                    <li>Fixed daily or weekly payments</li>
-                    <li>Early payoff discounts</li>
-                    <li>No collateral required</li>
-                    <li>15-minute approvals</li>
-                </ul>
-                <a href="https://app.captap.co/apply" target="_blank" rel="noopener" class="fund-cta">
-                    Apply for MCA
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </a>
+                <!-- 02 — Review Your Offer -->
+                <div class="step bubble reveal">
+                    <div class="bubble-eyebrow placeholder" aria-hidden="true">&nbsp;</div>
+                    <div class="step-num">02</div>
+                    <h4>Review Your Offer</h4>
+                    <p>Get multiple offers within hours. Review terms with your dedicated rep. No pressure, transparent pricing.</p>
+                    <ul class="bubble-list">
+                        <li>15-minute approvals</li>
+                        <li>Fixed daily or weekly payments</li>
+                    </ul>
+                    <div class="step-meta">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+                        <span>offers in 3h</span>
+                    </div>
+                </div>
+                <!-- 03 — Get Funded -->
+                <div class="step bubble reveal">
+                    <div class="bubble-eyebrow placeholder" aria-hidden="true">&nbsp;</div>
+                    <div class="step-num">03</div>
+                    <h4>Get Funded</h4>
+                    <p>Sign digitally, funds wire to your account. Most clients funded within 24 hours. Cheers to growth.</p>
+                    <ul class="bubble-list">
+                        <li>No collateral required</li>
+                        <li>Early payoff discounts</li>
+                    </ul>
+                    <div class="step-meta">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+                        <span>wired same-day</span>
+                    </div>
+                </div>
+                <!-- 04 — Second Round -->
+                <div class="step bubble reveal">
+                    <div class="bubble-eyebrow alt">Renewal</div>
+                    <div class="step-num">04</div>
+                    <h4>Second Round</h4>
+                    <p>Once you're halfway paid on your current advance, you're eligible to renew — with bigger amounts, and priority funding. Loyalty goes a long way around here.</p>
+                    <ul class="bubble-list">
+                        <li>Higher funding limits</li>
+                        <li>Priority funding queue</li>
+                    </ul>
+                    <div class="step-meta">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+                        <span>eligible at 50% paid</span>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <!-- LINE OF CREDIT — hidden for now; restore by removing this comment wrapper -->
-            <!--
-            <div class="fund-card loc reveal">
-                <span class="fund-eyebrow">Line of Credit</span>
-                <h3>Draw It When You Need It.</h3>
-                <p class="fund-tagline">A revolving limit that's always on-call. Pull what you need, pay interest only on what you use, and tap again once you pay it down.</p>
-                <div class="fund-stats">
-                    <div class="fund-stat">
-                        <div class="fund-stat-label">Revolving</div>
-                        <div class="fund-stat-value">$<span class="accent">5K</span>–$100K</div>
-                    </div>
-                    <div class="fund-stat">
-                        <div class="fund-stat-label">Term</div>
-                        <div class="fund-stat-value"><span class="accent">6 or 12</span> mo</div>
-                    </div>
-                    <div class="fund-stat">
-                        <div class="fund-stat-label">Access</div>
-                        <div class="fund-stat-value"><span class="accent">Any</span>time</div>
-                    </div>
+        <!-- ===============================================================
+             LINE OF CREDIT — archived for future reactivation (do NOT delete)
+             Uncomment and reinsert into a .funding-grid to relaunch.
+             =============================================================== -->
+        <!--
+        <div class="fund-card loc reveal">
+            <span class="fund-eyebrow">Line of Credit</span>
+            <h3>Draw It When You Need It.</h3>
+            <p class="fund-tagline">A revolving limit that's always on-call. Pull what you need, pay interest only on what you use, and tap again once you pay it down.</p>
+            <div class="fund-stats">
+                <div class="fund-stat">
+                    <div class="fund-stat-label">Revolving</div>
+                    <div class="fund-stat-value">$<span class="accent">5K</span>–$100K</div>
                 </div>
-                <ul class="fund-list">
-                    <li>No draw fees — take what you need</li>
-                    <li>Only pay interest on what you borrow</li>
-                    <li>Monthly payments</li>
-                    <li>Same-day funding on approved draws</li>
-                </ul>
-                <a href="https://app.captap.co/apply" target="_blank" rel="noopener" class="fund-cta">
-                    Apply for Line of Credit
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </a>
+                <div class="fund-stat">
+                    <div class="fund-stat-label">Term</div>
+                    <div class="fund-stat-value"><span class="accent">6 or 12</span> mo</div>
+                </div>
+                <div class="fund-stat">
+                    <div class="fund-stat-label">Access</div>
+                    <div class="fund-stat-value"><span class="accent">Any</span>time</div>
+                </div>
             </div>
-            -->
-            <!-- /LINE OF CREDIT -->
+            <ul class="fund-list">
+                <li>No draw fees — take what you need</li>
+                <li>Only pay interest on what you borrow</li>
+                <li>Monthly payments</li>
+                <li>Same-day funding on approved draws</li>
+            </ul>
+            <a href="https://app.captap.co/apply" target="_blank" rel="noopener" class="fund-cta">
+                Apply for Line of Credit
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
         </div>
+        -->
+        <!-- /LINE OF CREDIT archive -->
     </div>
 </section>
 
@@ -3462,69 +3633,10 @@
             </div>
             <div class="min-req-card reveal">
                 <div class="min-req-value">525</div>
-                <div class="min-req-label">personal FICO<sup>&reg;</sup> score</div>
+                <div class="min-req-label">personal FICO<sup>®</sup> score</div>
             </div>
         </div>
         <p class="min-req-note">** Minimums vary by program. Soft credit pull only — won't affect your score.</p>
-    </div>
-</div>
-
-<!-- =============================================================
-     PROCESS — 3 steps
-     ============================================================= -->
-<div class="section-wrap" style="padding-top:0;">
-    <div class="container">
-        <div class="section-intro reveal" id="process">
-            <span class="eyebrow">The Process</span>
-            <h2>The 3-Step Mix</h2>
-            <p>Getting funded shouldn't be harder than ordering a drink.</p>
-        </div>
-
-        <section class="section">
-            <div class="section-header">
-                <div class="section-title">
-                    <span class="section-dot info"></span>
-                    <h2>Application Flow</h2>
-                </div>
-                <span class="stage-badge">~4 min</span>
-            </div>
-            <div class="section-body">
-                <div class="process-grid">
-                    <div class="step reveal">
-                        <div class="step-num">01</div>
-                        <h4>Apply at the Bar</h4>
-                        <p>Fill out our secure 2-minute form. Upload 3 months of bank statements. That's it.</p>
-                        <a href="https://app.captap.co/apply" target="_blank" rel="noopener" class="step-cta">
-                            <span>Open Your Tab</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
-                        </a>
-                        <div class="step-meta">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                            <span>~2 min application</span>
-                        </div>
-                    </div>
-                    <div class="step reveal">
-                        <div class="step-num">02</div>
-                        <h4>Review Your Offer</h4>
-                        <p>Get multiple offers within hours. Review terms with your dedicated rep. No pressure, transparent pricing.</p>
-                        <div class="step-meta">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                            <span>offers in 3h</span>
-                        </div>
-                    </div>
-                    <div class="step reveal">
-                        <div class="step-num">03</div>
-                        <h4>Get Funded</h4>
-                        <p>Sign digitally, funds wire to your account. Most clients funded within 24 hours. Cheers to growth.</p>
-                        <div class="step-meta">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                            <span>wired same-day</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </div>
 </div>
 
@@ -3561,28 +3673,28 @@
 
                     <ul class="qp-criteria">
                         <li data-crit="age">
-                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
                             <div>
                                 <div class="crit-name">Time in business</div>
                             </div>
                             <div class="answer" data-ans="age">—</div>
                         </li>
                         <li data-crit="rev">
-                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
                             <div>
                                 <div class="crit-name">Monthly revenue</div>
                             </div>
                             <div class="answer" data-ans="rev">—</div>
                         </li>
                         <li data-crit="bank">
-                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
                             <div>
                                 <div class="crit-name">Business bank account</div>
                             </div>
                             <div class="answer" data-ans="bank">—</div>
                         </li>
                         <li data-crit="us">
-                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
                             <div>
                                 <div class="crit-name">U.S. registered</div>
                             </div>
@@ -3597,7 +3709,7 @@
                     </div>
 
                     <div class="qp-trust">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         <span>Soft inquiry only · no credit impact</span>
                     </div>
                 </aside>
@@ -3615,7 +3727,7 @@
                                     <span class="opt-hint">· early stage, Silver/Bronze</span>
                                 </div>
                                 <span class="opt-meta">Eligible</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
                             </button>
                             <button class="qualify-option" data-q="age" data-v="pass" data-text="1+ year" data-meta="prime">
                                 <div class="opt-main">
@@ -3623,7 +3735,7 @@
                                     <span class="opt-hint">· established, Gold/Silver</span>
                                 </div>
                                 <span class="opt-meta">Prime Eligible</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
                             </button>
                             <button class="qualify-option" data-q="age" data-v="fail" data-text="Less than 3 months" data-meta="fail">
                                 <div class="opt-main">
@@ -3631,7 +3743,7 @@
                                     <span class="opt-hint">· below underwriting floor</span>
                                 </div>
                                 <span class="opt-meta warn">Review</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
                             </button>
                         </div>
                     </div>
@@ -3644,22 +3756,22 @@
                             <button class="qualify-option" data-q="rev" data-v="fail" data-text="Under $10K/mo" data-meta="fail" data-amount="0">
                                 <div class="opt-main"><span class="opt-label">Under $10K/mo</span><span class="opt-hint">· below minimum</span></div>
                                 <span class="opt-meta warn">Below Floor</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
                             </button>
                             <button class="qualify-option" data-q="rev" data-v="pass" data-text="$10K – $50K/mo" data-meta="bronze" data-amount="25000">
                                 <div class="opt-main"><span class="opt-label">$10K – $50K/mo</span><span class="opt-hint">· $10K – $50K advance</span></div>
                                 <span class="opt-meta" style="background:rgba(180,83,9,0.12); color:#b45309;">Bronze</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
                             </button>
                             <button class="qualify-option" data-q="rev" data-v="pass" data-text="$50K – $250K/mo" data-meta="silver" data-amount="150000">
                                 <div class="opt-main"><span class="opt-label">$50K – $250K/mo</span><span class="opt-hint">· $50K – $250K advance</span></div>
                                 <span class="opt-meta" style="background:rgba(100,116,139,0.14); color:#475569;">Silver</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
                             </button>
                             <button class="qualify-option" data-q="rev" data-v="pass" data-text="$250K+/mo" data-meta="gold" data-amount="400000">
                                 <div class="opt-main"><span class="opt-label">$250K+/mo</span><span class="opt-hint">· $250K – $500K advance</span></div>
                                 <span class="opt-meta" style="background:rgba(202,138,4,0.12); color:#ca8a04;">Gold · Prime</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
                             </button>
                         </div>
                     </div>
@@ -3672,12 +3784,12 @@
                             <button class="qualify-option" data-q="bank" data-v="pass" data-text="Business account">
                                 <div class="opt-main"><span class="opt-label">Yes — business account</span><span class="opt-hint">· verifiable deposits</span></div>
                                 <span class="opt-meta">Eligible</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
                             </button>
                             <button class="qualify-option" data-q="bank" data-v="fail" data-text="Personal account">
                                 <div class="opt-main"><span class="opt-label">Personal account only</span><span class="opt-hint">· can't verify business revenue</span></div>
                                 <span class="opt-meta warn">Not Eligible</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
                             </button>
                         </div>
                     </div>
@@ -3690,25 +3802,25 @@
                             <button class="qualify-option" data-q="us" data-v="pass" data-text="United States">
                                 <div class="opt-main"><span class="opt-label">United States</span><span class="opt-hint">· all 50 states + D.C.</span></div>
                                 <span class="opt-meta">Eligible</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
                             </button>
                             <button class="qualify-option" data-q="us" data-v="fail" data-text="Other">
                                 <div class="opt-main"><span class="opt-label">Outside the U.S.</span><span class="opt-hint">· we can't fund non-U.S. entities today</span></div>
                                 <span class="opt-meta warn">Not Available</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
                             </button>
                         </div>
                     </div>
 
                     <button class="qualify-back" id="q-back">
-                        <svg viewBox="0 0 24 24" width="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+                        <svg viewBox="0 0 24 24" width="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"></path></svg>
                         <span>Back</span>
                     </button>
 
                     <div class="qualify-result" id="q-pass">
                         <div class="res-head">
                             <div class="pulse-dot">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
                             </div>
                             <div>
                                 <h3>You Likely Qualify</h3>
@@ -3719,10 +3831,10 @@
                         <div class="res-ctas">
                             <a href="https://app.captap.co/apply" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
                                 Start Application
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
                             </a>
                             <a href="tel:+19295297322" class="btn btn-ghost btn-lg">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V19a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 3.18 2 2 0 0 1 4.18 1h2.08a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.42a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V19a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 3.18 2 2 0 0 1 4.18 1h2.08a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.42a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                                 Call Underwriter
                             </a>
                         </div>
@@ -3731,7 +3843,7 @@
                     <div class="qualify-result decline" id="q-fail">
                         <div class="res-head">
                             <div class="pulse-dot">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
                             </div>
                             <div>
                                 <h3>Not a Fit Yet</h3>
@@ -3806,35 +3918,35 @@
         </div>
         <div class="uses-grid">
             <div class="use-tile reveal">
-                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
                 <div class="use-text"><span class="use-title">Inventory</span><span class="use-sub">Stock up before a rush</span></div>
             </div>
             <div class="use-tile reveal">
-                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
                 <div class="use-text"><span class="use-title">Payroll</span><span class="use-sub">Keep the team paid on time</span></div>
             </div>
             <div class="use-tile reveal">
-                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
                 <div class="use-text"><span class="use-title">Expand</span><span class="use-sub">Open a new location</span></div>
             </div>
             <div class="use-tile reveal">
-                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
                 <div class="use-text"><span class="use-title">Marketing</span><span class="use-sub">Scale ads that are working</span></div>
             </div>
             <div class="use-tile reveal">
-                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
                 <div class="use-text"><span class="use-title">Cash Flow</span><span class="use-sub">Bridge slow-pay gaps</span></div>
             </div>
             <div class="use-tile reveal">
-                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
                 <div class="use-text"><span class="use-title">Equipment</span><span class="use-sub">Buy, lease, or repair</span></div>
             </div>
             <div class="use-tile reveal">
-                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
                 <div class="use-text"><span class="use-title">Hiring</span><span class="use-sub">Bring on new talent</span></div>
             </div>
             <div class="use-tile reveal">
-                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="use-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
                 <div class="use-text"><span class="use-title">Debt Consolidation</span><span class="use-sub">Clean up existing positions</span></div>
             </div>
         </div>
@@ -3966,10 +4078,10 @@
                         <h2>Partner With CapTap</h2>
                         <p>Join the highest-converting funding program in the industry. Competitive buy rates, fast syndication, and dedicated support for our partners.</p>
                         <ul class="partner-bullets">
-                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Same-day offers &amp; commission payouts</li>
-                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> High-risk deals accepted</li>
-                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> White-label portal available</li>
-                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Direct API access to our deal engine</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg> Same-day offers &amp; commission payouts</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg> High-risk deals accepted</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg> White-label portal available</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg> Direct API access to our deal engine</li>
                         </ul>
                     </div>
 
@@ -3978,26 +4090,26 @@
                         <form id="partner-form">
                             <div class="form-field">
                                 <label>Company Name</label>
-                                <input type="text" name="company_name" required placeholder="Brokerage LLC">
+                                <input type="text" name="company_name" required="" placeholder="Brokerage LLC">
                                 <span class="err">Required</span>
                             </div>
                             <div class="form-field">
                                 <label>Phone</label>
-                                <input type="tel" name="partner_phone" required placeholder="(555) 000-0000">
+                                <input type="tel" name="partner_phone" required="" placeholder="(555) 000-0000">
                                 <span class="err">Required</span>
                             </div>
                             <div class="form-field">
                                 <label>Email</label>
-                                <input type="email" name="partner_email" required placeholder="partner@example.com">
+                                <input type="email" name="partner_email" required="" placeholder="partner@example.com">
                                 <span class="err">Valid email required</span>
                             </div>
                             <button type="submit" id="partner-submit" class="btn btn-primary" style="width:100%; margin-top:4px;">
                                 <span class="btn-label">Submit Request</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
                             </button>
                         </form>
                         <div class="form-success" id="partner-success">
-                            <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+                            <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></div>
                             <h3>Request Sent</h3>
                             <p>Our partnership team will reach out shortly.</p>
                         </div>
@@ -4022,15 +4134,15 @@
                 <p>Merchant cash advances for growing businesses. Fast, transparent, and priced on revenue — not credit score obsession.</p>
                 <div class="footer-contact">
                     <div>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V19a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 3.18 2 2 0 0 1 4.18 1h2.08a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.42a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V19a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 3.18 2 2 0 0 1 4.18 1h2.08a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.42a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                         <span>(929) 529-7322</span>
                     </div>
                     <div>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><path d="M22 6l-10 7L2 6"></path></svg>
                         <span>info@captap.co</span>
                     </div>
                     <div>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                         <span>535 Fifth Avenue, 4th Flr #1070, New York, NY 10017</span>
                     </div>
                 </div>
@@ -4433,5 +4545,6 @@
 
 </script>
 
-</body>
-</html>
+
+
+</body></html>
